@@ -40,3 +40,25 @@ import sys
 #             print("inverse of %d is %f" %(number, 1.0/number))
 # =============================================================================
 
+print("coming throught stdout")
+
+sav_stdout = sys.stdout
+
+fh = open("text.txt", "w")
+sys.stdout = fh
+
+while True:
+    try:
+        number = input("Enter a number: ")
+    except EOFError:
+        print("end")
+        break
+    else:
+        print(number)
+        
+sys.stdout = sav_stdout
+fh.close()
+
+
+
+
