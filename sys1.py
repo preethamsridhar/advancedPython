@@ -58,7 +58,3 @@ while True:
         
 sys.stdout = sav_stdout
 fh.close()
-
-
-
-

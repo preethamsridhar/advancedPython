@@ -31,11 +31,18 @@ import subprocess
 #         print(line)
 #     handle.close()
 # =============================================================================
-    
-os.system('touch xyz')
-p = os.popen('ls -la')
-print(p.read())
-p = subprocess.Popen('cp -r xyz abc', shell=True)
-p = os.popen('ls -la')
-print(p.read())
+# =============================================================================
+#     
+# os.system('touch xyz')
+# p = os.popen('ls -la')
+# print(p.read())
+# p = subprocess.Popen('cp -r xyz abc', shell=True)
+# p = os.popen('ls -la')
+# print(p.read())
+# =============================================================================
+
+
+process = subprocess.Popen(['ls','-l'], stdout=subprocess.PIPE)
+print(process.stdout.read())
+
 
