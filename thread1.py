@@ -153,39 +153,45 @@ Created on Wed May  1 11:42:32 2019
 # 
 # 
 # =============================================================================
+# =============================================================================
+# 
+# import os, re
+# 
+# received_packages = re.compile(r'(\d) received')
+# status = ("no response", "alive but losses", "alive")
+# 
+# for suffix in range(7, 10):
+#     ip = "192.168.1."+ str(suffix)
+#     ping_out = os.popen("ping  -c2 " + ip)
+#     print(ping_out.readline())
+#     print("pinging..", ip)
+#     
+#     while True: 
+#         line = ping_out.readline()
+#         if not line: break
+#         print(line)
+#         
+#         n_received = received_packages.findall(line)
+#         if n_received:
+#             print(ip + ": " + status[int(n_received[0])])
+# =============================================================================
 
-import os, re
-
-received_packages = re.compile(r"(\d) received")
-status = ("no response", "alive but losses", "alive")
-
-for suffix in range(20, 30):
-    ip = "192.168.1."+str(suffix)
-    ping_out = os.popen("ping -q -c2 " + ip,"r")
-    print("pinging..", ip)
-    
-    while True: 
-        line = ping_out.readline()
-        if not line: break
-    
-        n_received = received_packages.findall(line)
-        if n_received:
-            print(ip + ": " + status[int(n_received[0])])
-            
-
-
-
-            
-4
-
-
-
-
-
-
-
-
-
+# =============================================================================
+# import subprocess, shlex
+# 
+# def run_command(command):
+#     process = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
+#     while True:
+#         output = process.stdout.readline()
+#         if output == '' and process.poll() is not None:
+#             break
+#         if output:
+#             print(output.strip())
+#     rc = process.poll()
+#     return rc
+# 
+# run_command("ping 192.168.1.9")
+# =============================================================================
 
 
 
