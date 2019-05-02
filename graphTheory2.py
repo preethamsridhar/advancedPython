@@ -67,6 +67,72 @@ class Graph(object):
                     return extended_path
         return None
     
+    def find_all_paths(self, start_vertex, end_vertex, path=[]):
+        """
+        find all the paths from start vertex to end_vertex in graph
+        """
+        graph = self.__graph_dict
+        path = path + [start_vertex]
+        
+        if start_vertex == end_vertex:
+            return [path]
+        if start_vertex not in graph:
+            return []
+        paths = []
+        for vertex in graph[start_vertex]:
+            if vertex not in path:
+                extended_paths = self.find_all_paths(vertex, end_vertex, path)
+                
+                for p in extended_paths:
+                    paths.append(p)
+                    
+        return paths
+    
+    """
+    The degree sum formula (Handshaking lemma): 
+    ∑v ∈ Vdeg(v) = 2 |E| 
+    This means that the sum of degrees of all the vertices is equal to the number of edges multiplied by 2.
+    We can conclude that the number of vertices with odd degree has to be even. This statement is known as 
+    the handshaking lemma. The name "handshaking lemma" stems from a popular mathematical problem: In any 
+    group of people the number of people who have shaken hands with an odd number of other people from the 
+    group is even. 
+    """
+    def vertex_degree(self, vertex):
+        """
+        The degree of a vertex is the number of edges connecting it, i.e. the number of adjacent vertices,
+        Loops are counted double i.e. every occurence of vertex in the list of adjacent vertices
+        """
+        adj_vertices = self.__graph_dict[vertex]
+        degree = len(adj_vertices) + adj_vertices.count(vertex)
+        return degree
+    
+    
+    def find_isolated_vertices(self):
+        graph = self.__graph_dict
+        isolated = []
+        for vertex in graph:
+            print(isolated, vertex)
+            if not in graph[vertex]:
+                isolated += [vertex]
+        return isolated
+    
+    def delta(self):
+        minimum = 10000000
+        for vertex in self.__graph_dict:
+            vertex_degree = self.vertex_degree(vertex)
+            if vertex_degree < minimum: 
+                minimum = vertex_degree
+        return minimum
+    
+    
+    def Delta(self):
+        maximum = 0
+        for vertex in self.__graph_dict:
+            vertex_degree = self.vertex_degree(vertex)
+            if vertex_degree > maximum: 
+                maximum = vertex_degree
+        return maximum
+    
 if __name__ == "__main__":
     g = { 
         "a" : ["d"],
@@ -107,7 +173,10 @@ if __name__ == "__main__":
     print(graph.vertices())
     print("\nEdges of a graph:")
     print(graph.edges())
-    
+
+    print("vertex degree of c:")    
+    print(graph.vertex_degree('c'))    
+
     print(str(graph))
 
     
