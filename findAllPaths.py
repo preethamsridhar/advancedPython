@@ -30,3 +30,5 @@ print(path)
 print('All paths from vertex "c" to vertex "c":')
 path = graph.find_all_paths('c', 'c')
 print(path)
+
+print(Graph.erdos_gallai(graph.degree_sequence()))

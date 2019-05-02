@@ -88,17 +88,18 @@ class Graph(object):
                     
         return paths
     
-    """
-    The degree sum formula (Handshaking lemma): 
-    ∑v ∈ Vdeg(v) = 2 |E| 
-    This means that the sum of degrees of all the vertices is equal to the number of edges multiplied by 2.
-    We can conclude that the number of vertices with odd degree has to be even. This statement is known as 
-    the handshaking lemma. The name "handshaking lemma" stems from a popular mathematical problem: In any 
-    group of people the number of people who have shaken hands with an odd number of other people from the 
-    group is even. 
-    """
+    
     def vertex_degree(self, vertex):
         """
+        The degree sum formula (Handshaking lemma): 
+        ∑v ∈ Vdeg(v) = 2 |E| 
+        This means that the sum of degrees of all the vertices is equal to the number of edges multiplied by 2.
+        We can conclude that the number of vertices with odd degree has to be even. This statement is known as 
+        the handshaking lemma. The name "handshaking lemma" stems from a popular mathematical problem: In any 
+        group of people the number of people who have shaken hands with an odd number of other people from the 
+        group is even. 
+        
+           
         The degree of a vertex is the number of edges connecting it, i.e. the number of adjacent vertices,
         Loops are counted double i.e. every occurence of vertex in the list of adjacent vertices
         """
@@ -112,7 +113,7 @@ class Graph(object):
         isolated = []
         for vertex in graph:
             print(isolated, vertex)
-            if not in graph[vertex]:
+            if not graph[vertex]:
                 isolated += [vertex]
         return isolated
     
@@ -132,6 +133,68 @@ class Graph(object):
             if vertex_degree > maximum: 
                 maximum = vertex_degree
         return maximum
+    
+    def degree_sequence(self):
+        seq = []
+        for vertex in self.__graph_dict:
+            seq += [self.vertex_degree(vertex)]
+        seq.sort(reverse=True)
+        return seq
+    
+    def density(self):
+        """ method to calculate the density of graph"""
+        g = self.__graph_dict
+        V = len(self.vertices())
+        E = len(self.edges())
+        return 2.0 * E/ (V * (V - 1))
+        
+    def is_connected(self, vertices_encountered=None, start_vertex=None):
+        """ determines if the graph is connected"""
+        if vertices_encountered is None:
+            vertices_encountered = set()
+            
+        gdict = self.__graph_dict
+        vertices = list(gdict.keys()) 
+        if not start_vertex:
+            start_vertex = vertices[0]
+        vertices_encountered.add(start_vertex)
+        if len(vertices_encountered) != len(vertices):
+            for vertex in gdict[start_vertex]:
+                if vertex not in vertices_encountered:
+                    if self.is_connected(vertices_encountered, vertex):
+                        return True
+        else:
+            return True
+        return False
+    
+    def diameter(self):
+        v = self.vertices()
+        pairs = [(v[i], v[j]) for i in range(len(v) - 1) for j in range(i+1, len(v))]
+        smallest_paths = []
+        for (s, e) in pairs:
+            paths = self.find_all_paths(s, e)
+            smallest = sorted(paths, key=len)[0]
+            smallest_paths.append(smallest)
+            
+        print(smallest_paths)    
+        smallest_paths.sort(key=len)
+        # longest path is at the end of list, 
+        # i.e. diameter corresponds to the length of this path
+        
+        diameter = len(smallest_paths[-1]) - 1
+        return diameter
+        
+    
+    @staticmethod
+    def erdos_gallai(deg_sequence):
+        if sum(deg_sequence) % 2:
+            return False
+        for k in range(1, len(deg_sequence) + 1):
+            left = sum(deg_sequence[:k])
+            right = k * (k -1) + sum([min(x, k) for x in deg_sequence[k:]])
+            if left > right:
+                return False
+        return True
     
 if __name__ == "__main__":
     g = { 
