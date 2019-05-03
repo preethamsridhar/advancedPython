@@ -23,7 +23,6 @@ class Polynomial:
         return res
     
     
-    
 p = Polynomial(4, 0, -4, 3, 0)
 for x in range(-3, 3):
     print(x, p(x))
